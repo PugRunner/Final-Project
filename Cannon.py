@@ -14,4 +14,4 @@ class Cannon:
         # make it look smoother, make it rotate in a circle
         x_length = math.cos(cos_radians)
         y_length = math.sin(sin_radians)
-        pygame.draw.line(screen, self.color, (self.x, self.y), (self.x + x_length * 100, self.y - y_length * 100), width=40)
+        pygame.draw.line(screen, self.color, (self.x, self.y), (self.x + x_length * 100, self.y + y_length * 100), width=40)

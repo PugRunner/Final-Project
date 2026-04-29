@@ -37,7 +37,10 @@ def main():
 
         (x,y) = pygame.mouse.get_pos()
         # math time to get degrees
-        # radians = math.atan(y/x)
+        # need this weird y stuff to put it in right quadrant, before it was in 4 now in 1
+        y = SCREEN_HEIGHT - y
+        y *= -1
+
         radius = math.sqrt(x ** 2 + y ** 2)
 
         cos_radians = math.acos(x/radius)
