@@ -1,4 +1,5 @@
 import pygame
+import math
 
 class Cannon:
 
@@ -10,7 +11,9 @@ class Cannon:
         self.angle = angle
         self.color = color
 
-        self.rect = pygame.draw.line((x, y), (x+width, y+height))
-
     def display(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        x_length = math.cos(math.radians(self.angle))
+        y_length = math.sin(math.radians(self.angle))
+        print(x_length)
+        print(y_length)
+        pygame.draw.line(screen, self.color, (self.x, self.y), (self.x + x_length * 100, self.y - y_length * 100), width=40)

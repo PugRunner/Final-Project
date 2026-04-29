@@ -1,5 +1,6 @@
 # imports
 import pygame
+import math
 from Cannon import Cannon
 
 # screen dimensions
@@ -28,8 +29,8 @@ clock = pygame.time.Clock()
 def main():
     running = True
 
-    # (self, x, y, width, height, rotation, color)
-    cannon = Cannon(10, 550, 30, 45, 45, CANNON_COLOR)
+    # (self, x, y, width, height, angle, color)
+    cannon = Cannon(50, 500, 30, 45, 45, CANNON_COLOR)
 
     while running:
         screen.fill(BACKGROUND_COLOR)
