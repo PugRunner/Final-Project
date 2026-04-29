@@ -30,13 +30,21 @@ def main():
     running = True
 
     # (self, x, y, width, height, angle, color)
-    cannon = Cannon(50, 500, 30, 45, 45, CANNON_COLOR)
+    cannon = Cannon(50, 500, 30, 45, CANNON_COLOR)
 
     while running:
         screen.fill(BACKGROUND_COLOR)
 
+        (x,y) = pygame.mouse.get_pos()
+        # math time to get degrees
+        # radians = math.atan(y/x)
+        radius = math.sqrt(x ** 2 + y ** 2)
+
+        cos_radians = math.acos(x/radius)
+        sin_radians = math.asin(y/radius)
+
         # things to display
-        cannon.display(screen)
+        cannon.display(screen, cos_radians, sin_radians)
 
         pygame.display.update()
         clock.tick(FPS)
