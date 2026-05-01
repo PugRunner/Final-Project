@@ -14,7 +14,9 @@ class Cannon_Ball:
 
     def update(self, screen, cannon_fired, x_speed, y_speed):
         if cannon_fired:
-            self.x = self.x + x_speed
+            if x_speed > 0:
+                self.x = self.x + x_speed
             self.y = self.y + y_speed
+
 
             self.ball = pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius)
