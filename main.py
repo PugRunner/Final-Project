@@ -20,10 +20,8 @@ FPS = 30
 # Cannon Ball stuff
 CANNON_BALL_COLOR = (255, 255, 255) 
 CANNON_BALL_RADIUS = 7
-CANNON_BALL_X_SPEED = 2
-CANNON_BALL_Y_SPEED = -2
-CANNON_BALL_DX = -1
-CANNON_BALL_DY = 1
+CANNON_BALL_DX = 0.01
+CANNON_BALL_DY = 0.02
 
 pygame.init()
 
@@ -41,11 +39,14 @@ def main():
     running = True
     cannon_fired = False
 
+    x_speed = 3
+    y_speed = -3
+
     # (self, x, y, width, height, angle, color)
     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
 
-    # (self, x, y, color, radius, x_speed, y_speed, dx, dy)
-    cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, CANNON_BALL_X_SPEED, CANNON_BALL_Y_SPEED, CANNON_BALL_DX, CANNON_BALL_DY)
+    # (self, x, y, color, radius, dx, dy)
+    cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS)
 
     while running:
         screen.fill(BACKGROUND_COLOR)
@@ -66,7 +67,10 @@ def main():
         cannon.display(screen, cos_radians, sin_radians)
         cannon_ball.display(screen)
 
-        cannon_ball.update(screen, cannon_fired)
+        cannon_ball.update(screen, cannon_fired, x_speed, y_speed)
+        if cannon_fired:
+            x_speed = x_speed - CANNON_BALL_DX
+            y_speed = y_speed + CANNON_BALL_DY
 
         pygame.display.update()
         clock.tick(FPS)
