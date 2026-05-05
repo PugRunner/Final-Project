@@ -22,7 +22,7 @@ FPS = 30
 CANNON_BALL_COLOR = (255, 255, 255) 
 CANNON_BALL_RADIUS = 7
 CANNON_BALL_DX = 0.01
-CANNON_BALL_DY = 0.1
+CANNON_BALL_DY = 0.15
 
 # Power Bar stuff
 POWER_BAR_WIDTH = 30
@@ -52,7 +52,7 @@ def main():
     r_x = 0
     r_y = 0
 
-    y_speed_factor = 10
+    y_speed_factor = 15
     x_speed_factor = 0
 
     # (self, x, y, width, height, angle, color)
