@@ -109,6 +109,17 @@ def main():
 
                     x_speed_factor = power_bar.update(screen, r_x, r_y, power)
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
+                    cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS)
+                    power_bar = Power_Bar(0+10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
+
+                    cannon_fired = False
+                    power = False
+                    x_speed = 0
+                    y_speed = 0
+
                     
 
 
