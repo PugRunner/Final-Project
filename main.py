@@ -59,7 +59,7 @@ def main():
     cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS)
 
     # (self, x, y, width, height, color):
-    power_bar = Power_Bar(0, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
+    power_bar = Power_Bar(0+10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
 
     while running:
         screen.fill(BACKGROUND_COLOR)
@@ -101,7 +101,10 @@ def main():
                     (r_x,r_y) = pygame.mouse.get_pos()
                     power = True
 
-        power_bar.update(screen, r_x, r_y, power)
+                    x_speed = power_bar.update(screen, r_x, r_y, power)
+                    
+
+
 
         pygame.display.update()
         clock.tick(FPS)
