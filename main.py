@@ -22,12 +22,12 @@ FPS = 30
 CANNON_BALL_COLOR = (255, 255, 255) 
 CANNON_BALL_RADIUS = 7
 CANNON_BALL_DX = 0.01
-CANNON_BALL_DY = 0.02
+CANNON_BALL_DY = 0.1
 
 # Power Bar stuff
-POWER_BAR_WIDTH = 40
+POWER_BAR_WIDTH = 30
 POWER_BAR_HEIGHT = 80
-POWER_BAR_COLOR = (60, 60, 60)
+POWER_BAR_COLOR = (255, 255, 255) 
 
 pygame.init()
 
@@ -46,11 +46,14 @@ def main():
     cannon_fired = False
 
     x_speed = 3
-    y_speed = -3
+    y_speed = -2
 
     power = False
     r_x = 0
     r_y = 0
+
+    y_speed_factor = 10
+    x_speed_factor = 0
 
     # (self, x, y, width, height, angle, color)
     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
@@ -80,6 +83,7 @@ def main():
         cannon.display(screen, cos_radians, sin_radians)
         cannon_ball.display(screen)
         power_bar.display(screen)
+        
 
         cannon_ball.update(screen, cannon_fired, x_speed, y_speed)
         if cannon_fired:
@@ -97,11 +101,14 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1: # 1 is the Left Mouse Button
                     cannon_fired = True
+                    y_speed = sin_radians * y_speed_factor
+                    x_speed = (1-cos_radians) * x_speed_factor
                 if event.button == 3: # 3 is right mouse 
                     (r_x,r_y) = pygame.mouse.get_pos()
                     power = True
 
-                    x_speed = power_bar.update(screen, r_x, r_y, power)
+                    x_speed_factor = power_bar.update(screen, r_x, r_y, power)
+
                     
 
 
