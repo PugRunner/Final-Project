@@ -67,6 +67,8 @@ def main():
 
     cannon_fired = False
 
+    mistake = 0
+
     # (self, x, y, width, height, angle, color)
     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
 
@@ -114,6 +116,7 @@ def main():
             x_speed = 0
             y_speed = 0
             cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, screen)
+            mistake += 1
             cannon_fired = False
 
 
@@ -155,6 +158,10 @@ def main():
         if scored:
                 points += 1
                 scored = False
+                mistake = 0
+
+        if mistake == 4: # need to do 1 more than intended due to cannon ball going through target
+             points = 0
 
 
         pygame.display.update()
