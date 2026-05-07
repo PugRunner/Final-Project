@@ -63,6 +63,7 @@ def main():
     x_speed_factor = 0
 
     points = 0
+    scored = False
 
     # (self, x, y, width, height, angle, color)
     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
@@ -138,21 +139,20 @@ def main():
                     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
                     cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, screen)
                     power_bar = Power_Bar(0+10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
+                    target = Target(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, TARGET_RADIUS, TARGET_COLOR, points, screen)
 
                     cannon_fired = False
                     power = False
                     x_speed = 0
                     y_speed = 0
                 
-                if event.key == pygame.K_t:
-                    target = Target(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, TARGET_RADIUS, TARGET_COLOR, points, screen)
 
-            if (pygame.Rect.colliderect(cannon_ball.getRect(), target.getRect())):
-                print(points)
-                points = target.hit()
-
-                    
-
+        if (pygame.Rect.colliderect(target.getRect(), cannon_ball.getRect())):
+                scored = target.hit()
+                print("HOla")
+        if scored:
+                points += 1
+                scored = False
 
 
         pygame.display.update()
