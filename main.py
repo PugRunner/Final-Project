@@ -4,6 +4,7 @@ import math
 from Cannon import Cannon
 from Cannon_Ball import Cannon_Ball
 from Power_Bar import Power_Bar
+from Target import Target
 
 # screen dimensions
 SCREEN_WIDTH = 900
@@ -28,6 +29,9 @@ CANNON_BALL_DY = 0.15
 POWER_BAR_WIDTH = 30
 POWER_BAR_HEIGHT = 80
 POWER_BAR_COLOR = (255, 255, 255) 
+
+# target stuff
+TARGET_COLOR = 'red'
 
 pygame.init()
 
@@ -64,6 +68,9 @@ def main():
     # (self, x, y, width, height, color):
     power_bar = Power_Bar(0+10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
 
+    # self, min_x, max_x, min_y, max_y, radius, color
+    target = Target(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 10, TARGET_COLOR)
+
     while running:
         screen.fill(BACKGROUND_COLOR)
 
@@ -83,6 +90,7 @@ def main():
         cannon.display(screen, cos_radians, sin_radians)
         cannon_ball.display(screen)
         power_bar.display(screen)
+        target.display(screen)
         
 
         cannon_ball.update(screen, cannon_fired, x_speed, y_speed)
@@ -90,8 +98,7 @@ def main():
             x_speed = x_speed - CANNON_BALL_DX
             y_speed = y_speed + CANNON_BALL_DY
 
-        pygame.display.update()
-        clock.tick(FPS)
+
 
         # Event handleing: check for all events
         for event in pygame.event.get():
