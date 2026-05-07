@@ -32,6 +32,9 @@ POWER_BAR_COLOR = (255, 255, 255)
 
 # target stuff
 TARGET_COLOR = 'red'
+TARGET_RADIUS = 20
+
+SCORE_COLOR = (255, 255, 0)
 
 pygame.init()
 
@@ -59,20 +62,26 @@ def main():
     y_speed_factor = 15
     x_speed_factor = 0
 
+    points = 0
+
     # (self, x, y, width, height, angle, color)
     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
 
     # (self, x, y, color, radius, dx, dy)
-    cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS)
+    cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, screen)
 
     # (self, x, y, width, height, color):
     power_bar = Power_Bar(0+10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
 
-    # self, min_x, max_x, min_y, max_y, radius, color
-    target = Target(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 10, TARGET_COLOR)
+    # self, min_x, max_x, min_y, max_y, radius, color, point
+    target = Target(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, TARGET_RADIUS, TARGET_COLOR, points, screen)
 
     while running:
         screen.fill(BACKGROUND_COLOR)
+
+        score_text = f"{points}"
+        score_surface = font.render(score_text, True, SCORE_COLOR)
+        screen.blit(score_surface, (SCREEN_WIDTH // 2, 20))
 
 
         (x,y) = pygame.mouse.get_pos()
@@ -93,10 +102,17 @@ def main():
         target.display(screen)
         
 
-        cannon_ball.update(screen, cannon_fired, x_speed, y_speed)
+        after_cannon_fired = cannon_ball.update(screen, cannon_fired, x_speed, y_speed)
         if cannon_fired:
             x_speed = x_speed - CANNON_BALL_DX
             y_speed = y_speed + CANNON_BALL_DY
+
+        if after_cannon_fired == True:
+            x_speed = 0
+            y_speed = 0
+            cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, screen)
+            cannon_fired = False
+
 
 
 
@@ -110,6 +126,7 @@ def main():
                     cannon_fired = True
                     y_speed = sin_radians * y_speed_factor
                     x_speed = (1-cos_radians) * x_speed_factor
+
                 if event.button == 3: # 3 is right mouse 
                     (r_x,r_y) = pygame.mouse.get_pos()
                     power = True
@@ -119,13 +136,20 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
                     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
-                    cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS)
+                    cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, screen)
                     power_bar = Power_Bar(0+10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
 
                     cannon_fired = False
                     power = False
                     x_speed = 0
                     y_speed = 0
+                
+                if event.key == pygame.K_t:
+                    target = Target(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, TARGET_RADIUS, TARGET_COLOR, points, screen)
+
+            if (pygame.Rect.colliderect(cannon_ball.getRect(), target.getRect())):
+                print(points)
+                points = target.hit()
 
                     
 
