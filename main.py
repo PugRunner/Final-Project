@@ -65,6 +65,8 @@ def main():
     points = 0
     scored = False
 
+    cannon_fired = False
+
     # (self, x, y, width, height, angle, color)
     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
 
@@ -72,10 +74,10 @@ def main():
     cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, screen)
 
     # (self, x, y, width, height, color):
-    power_bar = Power_Bar(0+10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
+    power_bar = Power_Bar(10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
 
     # self, min_x, max_x, min_y, max_y, radius, color, point
-    target = Target(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, TARGET_RADIUS, TARGET_COLOR, points, screen)
+    target = Target(200, SCREEN_WIDTH, 200, SCREEN_HEIGHT, TARGET_RADIUS, TARGET_COLOR, points, screen)
 
     while running:
         screen.fill(BACKGROUND_COLOR)
@@ -122,7 +124,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and cannon_fired == False:
                 if event.button == 1: # 1 is the Left Mouse Button
                     cannon_fired = True
                     y_speed = sin_radians * y_speed_factor
@@ -138,8 +140,8 @@ def main():
                 if event.key == pygame.K_r:
                     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
                     cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, screen)
-                    power_bar = Power_Bar(0+10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
-                    target = Target(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, TARGET_RADIUS, TARGET_COLOR, points, screen)
+                    power_bar = Power_Bar(10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
+                    target = Target(200, SCREEN_WIDTH, 200, SCREEN_HEIGHT, TARGET_RADIUS, TARGET_COLOR, 0, screen)
 
                     cannon_fired = False
                     power = False
@@ -149,7 +151,7 @@ def main():
 
         if (pygame.Rect.colliderect(target.getRect(), cannon_ball.getRect())):
                 scored = target.hit()
-                print("HOla")
+
         if scored:
                 points += 1
                 scored = False
