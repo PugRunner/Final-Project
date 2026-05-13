@@ -5,6 +5,7 @@ from Cannon import Cannon
 from Cannon_Ball import Cannon_Ball
 from Power_Bar import Power_Bar
 from Target import Target
+from Rock import Rock
 
 # screen dimensions
 SCREEN_WIDTH = 900
@@ -35,6 +36,14 @@ TARGET_COLOR = 'red'
 TARGET_RADIUS = 20
 
 SCORE_COLOR = (255, 255, 0)
+
+# rock stuff
+ROCK_MIN_X = 200
+ROCK_MIN_Y = 300
+ROCK_WIDTH = 25
+ROCK_HEIGHT = 25
+ROCK_COLOR = CANNON_COLOR = (150, 150, 150)
+
 
 pygame.init()
 
@@ -69,6 +78,8 @@ def main():
 
     mistake = 0
 
+    rock_hit = False
+
     # (self, x, y, width, height, angle, color)
     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
 
@@ -80,6 +91,9 @@ def main():
 
     # self, min_x, max_x, min_y, max_y, radius, color, point
     target = Target(200, SCREEN_WIDTH, 200, SCREEN_HEIGHT, TARGET_RADIUS, TARGET_COLOR, points, screen)
+
+    # self, min_x, max_x, min_y, max_y, width, height, color
+    rock = Rock(ROCK_MIN_X, SCREEN_WIDTH, ROCK_MIN_Y, SCREEN_HEIGHT, ROCK_WIDTH, ROCK_HEIGHT, ROCK_COLOR)
 
     while running:
         screen.fill(BACKGROUND_COLOR)
@@ -105,6 +119,7 @@ def main():
         cannon_ball.display(screen)
         power_bar.display(screen)
         target.display(screen)
+        rock.display(screen)
         
 
         after_cannon_fired = cannon_ball.update(screen, cannon_fired, x_speed, y_speed)
@@ -145,6 +160,7 @@ def main():
                     cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, screen)
                     power_bar = Power_Bar(10, SCREEN_HEIGHT - POWER_BAR_HEIGHT, POWER_BAR_WIDTH, POWER_BAR_HEIGHT, POWER_BAR_COLOR)
                     target = Target(200, SCREEN_WIDTH, 200, SCREEN_HEIGHT, TARGET_RADIUS, TARGET_COLOR, 0, screen)
+                    rock = Rock(ROCK_MIN_X, SCREEN_WIDTH, ROCK_MIN_Y, SCREEN_HEIGHT, ROCK_WIDTH, ROCK_HEIGHT, ROCK_COLOR)
 
                     cannon_fired = False
                     power = False
@@ -159,9 +175,22 @@ def main():
                 points += 1
                 scored = False
                 mistake = 0
+                rock = Rock(ROCK_MIN_X, SCREEN_WIDTH, ROCK_MIN_Y, SCREEN_HEIGHT, ROCK_WIDTH, ROCK_HEIGHT, ROCK_COLOR)
 
         if mistake == 4: # need to do 1 more than intended due to cannon ball going through target
              points = 0
+
+        if (pygame.Rect.colliderect(cannon_ball.getRect(), rock.getRect())):
+            rock_hit = rock.hit()
+
+
+        if rock_hit:
+            rock_hit = False
+            cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, screen)
+            mistake += 1
+            cannon_fired = False
+            x_speed = 0
+            y_speed = 0
 
 
         pygame.display.update()

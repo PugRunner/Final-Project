@@ -28,7 +28,6 @@ class Target:
         return ball_as_rect
     
     def hit(self):
-        scored = False
         self.x = random.randint(self.min_x, self.max_x)
         self.y = random.randint(self.min_y, self.max_y)
         scored = True
