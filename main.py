@@ -1,5 +1,6 @@
 # imports
 import pygame
+from pygame import mixer
 import math
 from Cannon import Cannon
 from Cannon_Ball import Cannon_Ball
@@ -40,9 +41,9 @@ SCORE_COLOR = (255, 255, 0)
 # rock stuff
 ROCK_MIN_X = 200
 ROCK_MIN_Y = 300
-ROCK_WIDTH = 25
-ROCK_HEIGHT = 25
-ROCK_COLOR = CANNON_COLOR = (150, 150, 150)
+ROCK_WIDTH = 40
+ROCK_HEIGHT = 40
+ROCK_COLOR = (150, 150, 150)
 
 
 pygame.init()
@@ -52,7 +53,10 @@ pygame.init()
 font = pygame.font.SysFont('arial', 22)
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Pong by Duncan")
+pygame.display.set_caption("I CAME IN LIKE A CAAANNNOOONNNBALLLL")
+
+mixer.music.load("./sounds/background_music.mp3")
+mixer.music.set_volume(1) # ranges from [0, 1)
 
 clock = pygame.time.Clock()
 
@@ -95,6 +99,12 @@ def main():
     # self, min_x, max_x, min_y, max_y, width, height, color
     rock = Rock(ROCK_MIN_X, SCREEN_WIDTH, ROCK_MIN_Y, SCREEN_HEIGHT, ROCK_WIDTH, ROCK_HEIGHT, ROCK_COLOR)
 
+    mixer.music.play(-1)
+
+    date_file = open("High_Score.txt", "r")
+    High_Score = date_file.read()
+    date_file.close()
+
     while running:
         screen.fill(BACKGROUND_COLOR)
 
@@ -102,6 +112,9 @@ def main():
         score_surface = font.render(score_text, True, SCORE_COLOR)
         screen.blit(score_surface, (SCREEN_WIDTH // 2, 20))
 
+        High_Score_Text = f"High Score: {High_Score}"
+        high_score_surface = font.render(High_Score_Text, True, SCORE_COLOR)
+        screen.blit(high_score_surface, (SCREEN_WIDTH // 2, 40))
 
         (x,y) = pygame.mouse.get_pos()
         # math time to get radians
@@ -148,13 +161,14 @@ def main():
                     y_speed = sin_radians * y_speed_factor
                     x_speed = (1-cos_radians) * x_speed_factor
 
-                if event.button == 3: # 3 is right mouse 
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
                     (r_x,r_y) = pygame.mouse.get_pos()
                     power = True
 
                     x_speed_factor = power_bar.update(screen, r_x, r_y, power)
-
-            if event.type == pygame.KEYDOWN:
+                    
                 if event.key == pygame.K_r:
                     cannon = Cannon(CANNON_X, CANNON_Y, 30, 45, CANNON_COLOR)
                     cannon_ball = Cannon_Ball(CANNON_X, CANNON_Y, CANNON_BALL_COLOR, CANNON_BALL_RADIUS, screen)
@@ -166,6 +180,7 @@ def main():
                     power = False
                     x_speed = 0
                     y_speed = 0
+                    points = 0
                 
 
         if (pygame.Rect.colliderect(target.getRect(), cannon_ball.getRect())):
@@ -192,6 +207,17 @@ def main():
             x_speed = 0
             y_speed = 0
 
+        if (pygame.Rect.colliderect(target.getRect(), rock.getRect())):
+            rock = Rock(ROCK_MIN_X, SCREEN_WIDTH, ROCK_MIN_Y, SCREEN_HEIGHT, ROCK_WIDTH, ROCK_HEIGHT, ROCK_COLOR)
+
+        if points > int(High_Score):
+            date_file = open("High_Score.txt", "w")
+            High_Score = date_file.write(str(points))
+            date_file.close()
+
+            date_file = open("High_Score.txt", "r")
+            High_Score = date_file.read()
+            date_file.close()
 
         pygame.display.update()
         clock.tick(FPS)

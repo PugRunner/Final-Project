@@ -21,4 +21,4 @@ class Power_Bar:
             self.rect = pygame.Rect(self.x, y, self.width, height)
             pygame.draw.rect(screen, 'orange', self.rect)
 
-            return math.cbrt(600 - y) * 3
+            return math.cbrt(600 - y) * 4
