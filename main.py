@@ -56,7 +56,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("I CAME IN LIKE A CAAANNNOOONNNBALLLL")
 
 mixer.music.load("./sounds/background_music.mp3")
-mixer.music.set_volume(1) # ranges from [0, 1)
+mixer.music.set_volume(0.7) # ranges from [0, 1)
 
 clock = pygame.time.Clock()
 
